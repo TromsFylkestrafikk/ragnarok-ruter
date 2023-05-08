@@ -1,0 +1,14 @@
+{
+  "name": "ragnarok-consat",
+  "version": "0.0.1-dev",
+  "description": "Ragnarok data sink for Consat",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kåre Slettnes",
+  "license": "GPL-3.0-or-later"
+}
