@@ -66,7 +66,6 @@ class RagnarokConsatServiceProvider extends ServiceProvider
      */
     public function publishConfig()
     {
-        dump('Publishing config from consat sink');
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/ragnarok_consat.php' => config_path('ragnarok_consat.php'),
