@@ -14,7 +14,7 @@ class RagnarokConsatServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/ragnarok.php', 'ragnarok-consat');
+        $this->mergeConfigFrom(__DIR__ . '/../config/ragnarok.php', 'ragnarok');
 
         $this->publishConfig();
 

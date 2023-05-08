@@ -2,5 +2,5 @@
 
 return [
     'sinks' => ['Consat sink'],
-    'mordi' => 'bah',
+    'test' => 'bah',
 ];
