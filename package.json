@@ -1,7 +1,7 @@
 {
-  "name": "ragnarok-consat",
+  "name": "ragnarok-STUB",
   "version": "0.0.1-dev",
-  "description": "Ragnarok data sink for Consat",
+  "description": "Ragnarok STUB data sink",
   "main": "index.js",
   "directories": {
     "test": "tests"
@@ -9,7 +9,7 @@
   "scripts": {
     "prepare": "husky install"
   },
-  "author": "Kåre Slettnes",
+  "author": "Your Name",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "husky": "^8.0.3",

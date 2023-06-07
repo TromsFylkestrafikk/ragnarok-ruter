@@ -1,10 +1,10 @@
-# ragnarok-consat
+# Ragnarok STUB sink
 
 
 ## Install
 
 ```bash
-composer require tromsfylkestrafikk/ragnarok-consat
+composer require tromsfylkestrafikk/ragnarok-STUB
 ```
 
 

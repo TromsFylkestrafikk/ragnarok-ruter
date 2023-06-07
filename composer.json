@@ -1,13 +1,13 @@
 {
-    "name": "tromsfylkestrafikk/ragnarok-consat",
-    "description": "Ragnarok datasink from Consat",
+    "name": "tromsfylkestrafikk/ragnarok-STUB",
+    "description": "Ragnarok stub datasink",
     "type": "library",
     "license": "GPL-3.0-or-later",
     "keywords": [],
     "authors": [
         {
-            "name": "Kåre Slettnes",
-            "email": "kaare.slettnes@tffk.no"
+            "name": "Your Name",
+            "email": "your.email@example.com"
         }
     ],
     "minimum-stability": "dev",
@@ -29,12 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "TromsFylkestrafikk\\RagnarokConsat\\": "src/"
+            "TromsFylkestrafikk\\RagnarokSTUB\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TromsFylkestrafikk\\RagnarokConsat\\Tests\\":"tests/"
+            "TromsFylkestrafikk\\RagnarokSTUB\\Tests\\":"tests/"
         }
     },
     "config": {
@@ -50,7 +50,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "TromsFylkestrafikk\\RagnarokConsat\\RagnarokConsatServiceProvider"
+                "TromsFylkestrafikk\\RagnarokSTUB\\RagnarokSTUBServiceProvider"
             ]
         }
     }

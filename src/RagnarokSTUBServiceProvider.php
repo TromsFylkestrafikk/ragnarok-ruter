@@ -1,11 +1,11 @@
 <?php
 
-namespace TromsFylkestrafikk\RagnarokConsat;
+namespace TromsFylkestrafikk\RagnarokSTUB;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-class RagnarokConsatServiceProvider extends ServiceProvider
+class RagnarokSTUBServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
@@ -43,7 +43,7 @@ class RagnarokConsatServiceProvider extends ServiceProvider
     private function routeConfiguration()
     {
         return [
-            'namespace'  => "TromsFylkestrafikk\RagnarokConsat\Http\Controllers",
+            'namespace'  => "TromsFylkestrafikk\RagnarokSTUB\Http\Controllers",
             'middleware' => 'api',
             'prefix'     => 'api'
         ];

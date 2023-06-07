@@ -1,8 +1,8 @@
 <?php
 
-namespace TromsFylkestrafikk\RagnarokConsat\Tests;
+namespace TromsFylkestrafikk\RagnarokSTUB\Tests;
 
-use TromsFylkestrafikk\RagnarokConsat\RagnarokConsatServiceProvider;
+use TromsFylkestrafikk\RagnarokSTUB\RagnarokSTUBServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase
@@ -32,6 +32,6 @@ class TestCase extends BaseTestCase
 
     protected function getPackageProviders($app)
     {
-        return [RagnarokConsatServiceProvider::class];
+        return [RagnarokSTUBServiceProvider::class];
     }
 }
