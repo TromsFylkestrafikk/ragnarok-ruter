@@ -18,7 +18,7 @@ class RagnarokSTUBServiceProvider extends ServiceProvider
 
         $this->publishConfig();
 
-        // $this->loadViewsFrom(__DIR__.'/resources/views', 'ragnarok_consat');
+        // $this->loadViewsFrom(__DIR__.'/resources/views', 'ragnarok_STUB');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->registerRoutes();
     }
@@ -68,7 +68,7 @@ class RagnarokSTUBServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/ragnarok_consat.php' => config_path('ragnarok_consat.php'),
+                __DIR__ . '/../config/ragnarok_STUB.php' => config_path('ragnarok_STUB.php'),
             ], 'config');
         }
     }
