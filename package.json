@@ -1,7 +1,7 @@
 {
-  "name": "ragnarok-STUB",
+  "name": "ragnarok-ruter",
   "version": "0.0.1-dev",
-  "description": "Ragnarok STUB data sink",
+  "description": "Ragnarok Ruter data sink",
   "main": "index.js",
   "directories": {
     "test": "tests"

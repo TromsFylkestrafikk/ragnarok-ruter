@@ -1,11 +1,11 @@
 <?php
 
-namespace TromsFylkestrafikk\RagnarokSTUB;
+namespace TromsFylkestrafikk\RagnarokRuter;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-class RagnarokSTUBServiceProvider extends ServiceProvider
+class RagnarokRuterServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
@@ -14,11 +14,11 @@ class RagnarokSTUBServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/ragnarok.php', 'ragnarok');
+        $this->mergeConfigFrom(__DIR__ . '/../config/ragnarok_ruter.php', 'ragnarok_ruter');
 
         $this->publishConfig();
 
-        // $this->loadViewsFrom(__DIR__.'/resources/views', 'ragnarok_STUB');
+        // $this->loadViewsFrom(__DIR__.'/resources/views', 'ragnarok_Ruter');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->registerRoutes();
     }
@@ -43,7 +43,7 @@ class RagnarokSTUBServiceProvider extends ServiceProvider
     private function routeConfiguration()
     {
         return [
-            'namespace'  => "TromsFylkestrafikk\RagnarokSTUB\Http\Controllers",
+            'namespace'  => "TromsFylkestrafikk\RagnarokRuter\Http\Controllers",
             'middleware' => 'api',
             'prefix'     => 'api'
         ];
@@ -68,7 +68,7 @@ class RagnarokSTUBServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/ragnarok_STUB.php' => config_path('ragnarok_STUB.php'),
+                __DIR__ . '/../config/ragnarok_ruter.php' => config_path('ragnarok_ruter.php'),
             ], 'config');
         }
     }

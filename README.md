@@ -1,10 +1,10 @@
-# Ragnarok STUB sink
+# Ragnarok Ruter sink
 
 
 ## Install
 
 ```bash
-composer require tromsfylkestrafikk/ragnarok-STUB
+composer require tromsfylkestrafikk/ragnarok-ruter
 ```
 
 

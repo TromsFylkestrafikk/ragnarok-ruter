@@ -1,6 +1,6 @@
 {
-    "name": "tromsfylkestrafikk/ragnarok-STUB",
-    "description": "Ragnarok stub datasink",
+    "name": "tromsfylkestrafikk/ragnarok-ruter",
+    "description": "Ragnarok Ruter datasink",
     "type": "library",
     "license": "GPL-3.0-or-later",
     "keywords": [],
@@ -29,12 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "TromsFylkestrafikk\\RagnarokSTUB\\": "src/"
+            "TromsFylkestrafikk\\RagnarokRuter\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TromsFylkestrafikk\\RagnarokSTUB\\Tests\\":"tests/"
+            "TromsFylkestrafikk\\RagnarokRuter\\Tests\\":"tests/"
         }
     },
     "config": {
@@ -50,7 +50,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "TromsFylkestrafikk\\RagnarokSTUB\\RagnarokSTUBServiceProvider"
+                "TromsFylkestrafikk\\RagnarokRuter\\RagnarokRuterServiceProvider"
             ]
         }
     }
