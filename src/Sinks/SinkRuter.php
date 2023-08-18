@@ -4,9 +4,9 @@ namespace TromsFylkestrafikk\RagnarokRuter\Sinks;
 
 use Exception;
 use Illuminate\Support\Carbon;
+use TromsFylkestrafikk\RagnarokSink\Services\LocalFiles;
 use TromsFylkestrafikk\RagnarokSink\Sinks\SinkBase;
 use TromsFylkestrafikk\RagnarokRuter\Facades\RuterTransactions;
-use TromsFylkestrafikk\RagnarokRuter\Services\TransactionFiles;
 
 class SinkRuter extends SinkBase
 {
@@ -14,13 +14,13 @@ class SinkRuter extends SinkBase
     public $title = "Ruter";
 
     /**
-     * @var TransactionFiles
+     * @var LocalFiles
      */
     protected $ruterFiles = null;
 
     public function __construct()
     {
-        $this->ruterFiles = new TransactionFiles($this->id);
+        $this->ruterFiles = new LocalFiles($this->id);
     }
 
     /**
@@ -45,9 +45,10 @@ class SinkRuter extends SinkBase
     public function fetch($id): bool
     {
         try {
-            $this->ruterFiles->toFile($this->chunkFilename($id), RuterTransactions::getTransactionsAsJson($id));
+            $date = new Carbon($id);
+            $file = $this->ruterFiles->toFile($this->chunkFilename($id), RuterTransactions::getTransactionsAsJson($date));
         } catch (Exception $except) {
-            return false;
+            throw $except;
         }
         return $file ? true : false;
     }
@@ -65,6 +66,6 @@ class SinkRuter extends SinkBase
 
     protected function chunkFilename($id)
     {
-        return $id . 'json';
+        return $id . '.json';
     }
 }

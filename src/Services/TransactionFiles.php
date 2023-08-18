@@ -28,24 +28,30 @@ class TransactionFiles
         $this->disk = app('filesystem')->build(config('ragnarok_sink.local_disk'));
     }
 
+    /**
+     * Write content to new or existing file.
+     *
+     * @param string $filename
+     * @param string $content
+     *
+     * @return Rawfile
+     */
     public function toFile($filename, $content)
     {
         $checksum = md5($content);
-        $existing = $this->getFile($filename);
-        if ($existing) {
-            if ($existing->checksum !== $checksum) {
-                $existing->fill([
-                    'checksum' => $checksum,
-                    'import_status' => 'updated',
-                    'import_msg' => null,
-                ]);
-                $existing->save();
-            }
-            return $existing;
-        }
         $filePath = $this->getFilePath($filename);
         $this->disk->put($filePath, $content);
-        return RawFile::create([
+
+        $existing = $this->getFile($filename);
+        if ($existing && $existing->checksum !== $checksum) {
+            $existing->fill([
+                'checksum' => $checksum,
+                'import_status' => 'updated',
+                'import_msg' => null,
+            ]);
+            $existing->save();
+        }
+        return $existing ?: RawFile::create([
             'sink_id' => $this->sinkId,
             'name' => $filePath,
             'checksum' => $checksum,
@@ -53,12 +59,33 @@ class TransactionFiles
     }
 
     /**
+     * Get file by name, if it exists.
+     *
      * @param $filename
+     *
      * @return RawFile|null
      */
     public function getFile($filename)
     {
         return RawFile::firstWhere(['sink_id' => $this->sinkId, 'name' => $this->getFilePath($filename)]);
+    }
+
+    /**
+     * Remove file from DB and disk.
+     *
+     * @param string $filename
+     */
+    public function rmFile($filename)
+    {
+        $file = $this->getFile($filename);
+        if (!$file) {
+            return;
+        }
+        if ($this->disk->exists($file->name)) {
+            $this->disk->delete($file->name);
+        }
+        $file->delete();
+        return $this;
     }
 
     /**
