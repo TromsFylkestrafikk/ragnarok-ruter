@@ -4,12 +4,16 @@ namespace TromsFylkestrafikk\RagnarokRuter\Sinks;
 
 use Exception;
 use Illuminate\Support\Carbon;
+use TromsFylkestrafikk\RagnarokRuter\Facades\RuterTransactions;
+use TromsFylkestrafikk\RagnarokSink\Models\RawFile;
+use TromsFylkestrafikk\RagnarokSink\Traits\LogPrintf;
 use TromsFylkestrafikk\RagnarokSink\Services\LocalFiles;
 use TromsFylkestrafikk\RagnarokSink\Sinks\SinkBase;
-use TromsFylkestrafikk\RagnarokRuter\Facades\RuterTransactions;
 
 class SinkRuter extends SinkBase
 {
+    use LogPrintf;
+
     public $id = "ruter";
     public $title = "Ruter";
 
@@ -21,6 +25,7 @@ class SinkRuter extends SinkBase
     public function __construct()
     {
         $this->ruterFiles = new LocalFiles($this->id);
+        $this->logPrintfInit('[Sink %s]: ', $this->id);
     }
 
     /**
@@ -48,7 +53,7 @@ class SinkRuter extends SinkBase
             $date = new Carbon($id);
             $file = $this->ruterFiles->toFile($this->chunkFilename($id), RuterTransactions::getTransactionsAsJson($date));
         } catch (Exception $except) {
-            throw $except;
+            $this->error("%s[%d]: %s\n, %s", $except->getFile(), $except->getLine(), $except->getMessage(), $except->getTraceAsString());
         }
         return $file ? true : false;
     }

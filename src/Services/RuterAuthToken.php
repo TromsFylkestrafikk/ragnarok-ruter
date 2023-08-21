@@ -28,7 +28,7 @@ class RuterAuthToken
 
     public function __construct(protected array $config)
     {
-        $this->logPrintfInit("[Ruter]: ");
+        $this->logPrintfInit("[Ruter Token]: ");
     }
 
     public function getApiToken()
@@ -40,9 +40,10 @@ class RuterAuthToken
     protected function requestToken()
     {
         if ($this->apiToken && time() < $this->tokenExpires) {
+            $this->debug('Requesting API token: Valid. Nothing to do.');
             return;
         }
-        $this->debug('Requesting API token from Ruter.');
+        $this->debug('Requesting API token ...');
         $encodeB64 = base64_encode(sprintf('%s:%s', $this->config['client']['id'], $this->config['client']['secret']));
         $response = Http::withHeaders([
             'Content-Type' => 'application/x-www-form-urlencoded',
@@ -58,5 +59,6 @@ class RuterAuthToken
         $this->apiToken = $result['access_token'];
         $tokenLifetime = $result['expires_in'];
         $this->tokenExpires = time() + intval($tokenLifetime);
+        $this->debug('Token received. Expires in %d minutes', $tokenLifetime / 60);
     }
 }
