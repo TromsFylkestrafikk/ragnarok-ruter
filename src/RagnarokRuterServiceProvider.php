@@ -4,6 +4,8 @@ namespace TromsFylkestrafikk\RagnarokRuter;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use TromsFylkestrafikk\RagnarokRuter\Services\RuterAuthToken;
+use TromsFylkestrafikk\RagnarokRuter\Services\RuterTransactions;
 
 class RagnarokRuterServiceProvider extends ServiceProvider
 {
@@ -14,8 +16,6 @@ class RagnarokRuterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/ragnarok_ruter.php', 'ragnarok_ruter');
-
         $this->publishConfig();
 
         // $this->loadViewsFrom(__DIR__.'/resources/views', 'ragnarok_Ruter');
@@ -24,11 +24,27 @@ class RagnarokRuterServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->mergeConfigFrom(__DIR__ . '/../config/ragnarok_ruter.php', 'ragnarok_ruter');
+        $this->app->singleton(RuterAuthToken::class, function () {
+            return new RuterAuthToken(config('ragnarok_ruter'));
+        });
+        $this->app->singleton(RuterTransactions::class, function () {
+            return new RuterTransactions(config('ragnarok_ruter'));
+        });
+    }
+
+    /**
      * Register the package routes.
      *
      * @return void
      */
-    private function registerRoutes()
+    protected function registerRoutes()
     {
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
@@ -40,7 +56,7 @@ class RagnarokRuterServiceProvider extends ServiceProvider
     *
     * @return array
     */
-    private function routeConfiguration()
+    protected function routeConfiguration()
     {
         return [
             'namespace'  => "TromsFylkestrafikk\RagnarokRuter\Http\Controllers",
@@ -50,21 +66,11 @@ class RagnarokRuterServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
-    }
-
-    /**
      * Publish Config
      *
      * @return void
      */
-    public function publishConfig()
+    protected function publishConfig()
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
