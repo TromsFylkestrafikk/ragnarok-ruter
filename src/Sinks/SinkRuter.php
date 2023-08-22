@@ -51,7 +51,8 @@ class SinkRuter extends SinkBase
     {
         try {
             $date = new Carbon($id);
-            $file = $this->ruterFiles->toFile($this->chunkFilename($id), RuterTransactions::getTransactionsAsJson($date));
+            $content = gzencode(RuterTransactions::getTransactionsAsJson($date));
+            $file = $this->ruterFiles->toFile($this->chunkFilename($id), $content);
         } catch (Exception $except) {
             $this->error("%s[%d]: %s\n, %s", $except->getFile(), $except->getLine(), $except->getMessage(), $except->getTraceAsString());
         }
@@ -71,6 +72,6 @@ class SinkRuter extends SinkBase
 
     protected function chunkFilename($id)
     {
-        return $id . '.json';
+        return $id . '.json.gz';
     }
 }
