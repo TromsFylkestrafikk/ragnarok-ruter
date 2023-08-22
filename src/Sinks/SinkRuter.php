@@ -60,6 +60,15 @@ class SinkRuter extends SinkBase
     }
 
     /**
+     * @inheritdoc
+     */
+    public function removeChunk($id): bool
+    {
+        $this->ruterFiles->rmFile($this->chunkFilename($id));
+        return true;
+    }
+
+    /**
      * Import one chunk from sink.
      *
      * @return bool
