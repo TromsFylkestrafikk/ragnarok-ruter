@@ -5,10 +5,9 @@ namespace TromsFylkestrafikk\RagnarokRuter\Sinks;
 use Exception;
 use Illuminate\Support\Carbon;
 use TromsFylkestrafikk\RagnarokRuter\Facades\RuterTransactions;
-use TromsFylkestrafikk\RagnarokSink\Models\RawFile;
-use TromsFylkestrafikk\RagnarokSink\Traits\LogPrintf;
 use TromsFylkestrafikk\RagnarokSink\Services\LocalFiles;
 use TromsFylkestrafikk\RagnarokSink\Sinks\SinkBase;
+use TromsFylkestrafikk\RagnarokSink\Traits\LogPrintf;
 
 class SinkRuter extends SinkBase
 {
@@ -49,6 +48,7 @@ class SinkRuter extends SinkBase
      */
     public function fetch($id): bool
     {
+        $file = null;
         try {
             $date = new Carbon($id);
             $content = gzencode(RuterTransactions::getTransactionsAsJson($date));
@@ -69,14 +69,28 @@ class SinkRuter extends SinkBase
     }
 
     /**
-     * Import one chunk from sink.
-     *
-     * @return bool
+     * @inheritdoc
      */
-    public function import(): bool
+    public function import($id): bool
     {
-        Log::debug('Ruter import. Yay!');
+        RuterTransactions::import(json_decode(
+            gzdecode($this->ruterFiles->getContents($this->chunkFilename($id))),
+            true
+        ));
         return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function deleteImport($id): bool
+    {
+        try {
+            RuterTransactions::delete(new Carbon($id));
+            return true;
+        } catch (Exception $except) {
+            return false;
+        }
     }
 
     protected function chunkFilename($id)

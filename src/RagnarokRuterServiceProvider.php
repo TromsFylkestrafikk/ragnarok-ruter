@@ -18,8 +18,8 @@ class RagnarokRuterServiceProvider extends ServiceProvider
     {
         $this->publishConfig();
 
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         // $this->loadViewsFrom(__DIR__.'/resources/views', 'ragnarok_Ruter');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->registerRoutes();
     }
 
