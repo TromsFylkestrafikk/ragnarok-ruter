@@ -9,7 +9,8 @@ use TromsFylkestrafikk\RagnarokRuter\Services\RuterTransactions as RuterTransact
 /**
  * @method static string getTransactionsAsJson(Carbon $date)
  * @method static array getTransactionsAsArray(Carbon $date)
- * @method static RuterTransactionsService importTransactions(array $transactions)
+ * @method static RuterTransactionsService import(array $transactions)
+ * @method static RuterTransactionsService delete(Carbon $date)
  */
 class RuterTransactions extends Facade
 {

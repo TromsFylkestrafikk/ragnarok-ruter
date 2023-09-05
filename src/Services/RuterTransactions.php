@@ -51,7 +51,7 @@ class RuterTransactions
      *
      * @return $this
      */
-    public function importTransactions($transactions)
+    public function import($transactions)
     {
         $rowCount = 0;
         foreach ($transactions as $row) {
@@ -59,6 +59,19 @@ class RuterTransactions
             $this->insertTransaction($row);
         }
         $this->debug('Imported %d transactions', count($transactions));
+        return $this;
+    }
+
+    /**
+     * Delete transactions from DB.
+     *
+     * @param Carbon $date
+     *
+     * @return $this
+     */
+    public function delete($date)
+    {
+        DB::table('ruter_transactions')->where('order_date', $date)->delete();
         return $this;
     }
 
