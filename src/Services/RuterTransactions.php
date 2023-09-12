@@ -124,7 +124,7 @@ class RuterTransactions
             'cs_ordered_by'     => $json['csOrderedBy'],
             'cs_comment'        => $json['csComment'],
             'cs_invoice_ref'    => $json['csInvoiceReference'],
-            'platform_version'  => $json['platformVersion'],
+            'platform_version'  => $json['platformVersion'] ?? null,
         ]);
         foreach ($json['passengers'] as $pax) {
             DB::table('ruter_passengers')->insert([
