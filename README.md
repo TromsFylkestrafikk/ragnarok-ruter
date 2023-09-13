@@ -4,7 +4,7 @@
 ## Install
 
 ```bash
-composer require tromsfylkestrafikk/ragnarok-ruter
+composer require ragnarok/ruter
 ```
 
 

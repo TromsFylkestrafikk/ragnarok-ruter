@@ -1,8 +1,8 @@
 <?php
 
-namespace TromsFylkestrafikk\RagnarokRuter\Tests;
+namespace Ragnarok\Ruter\Tests;
 
-use TromsFylkestrafikk\RagnarokRuter\RagnarokRuterServiceProvider;
+use Ragnarok\Ruter\RagnarokRuterServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase

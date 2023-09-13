@@ -1,10 +1,10 @@
 <?php
 
-namespace TromsFylkestrafikk\RagnarokRuter\Facades;
+namespace Ragnarok\Ruter\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Carbon;
-use TromsFylkestrafikk\RagnarokRuter\Services\RuterTransactions as RuterTransactionsService;
+use Ragnarok\Ruter\Services\RuterTransactions as RuterTransactionsService;
 
 /**
  * @method static string getTransactionsAsJson(Carbon $date)

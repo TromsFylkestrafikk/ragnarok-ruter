@@ -1,11 +1,11 @@
 <?php
 
-namespace TromsFylkestrafikk\RagnarokRuter;
+namespace Ragnarok\Ruter;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
-use TromsFylkestrafikk\RagnarokRuter\Services\RuterAuthToken;
-use TromsFylkestrafikk\RagnarokRuter\Services\RuterTransactions;
+use Ragnarok\Ruter\Services\RuterAuthToken;
+use Ragnarok\Ruter\Services\RuterTransactions;
 
 class RagnarokRuterServiceProvider extends ServiceProvider
 {
@@ -59,7 +59,7 @@ class RagnarokRuterServiceProvider extends ServiceProvider
     protected function routeConfiguration()
     {
         return [
-            'namespace'  => "TromsFylkestrafikk\RagnarokRuter\Http\Controllers",
+            'namespace'  => "Ragnarok\Ruter\Http\Controllers",
             'middleware' => 'api',
             'prefix'     => 'api'
         ];

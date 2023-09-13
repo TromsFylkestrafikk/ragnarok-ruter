@@ -1,13 +1,13 @@
 <?php
 
-namespace TromsFylkestrafikk\RagnarokRuter\Sinks;
+namespace Ragnarok\Ruter\Sinks;
 
 use Exception;
 use Illuminate\Support\Carbon;
-use TromsFylkestrafikk\RagnarokRuter\Facades\RuterTransactions;
-use TromsFylkestrafikk\RagnarokSink\Services\LocalFiles;
-use TromsFylkestrafikk\RagnarokSink\Sinks\SinkBase;
-use TromsFylkestrafikk\RagnarokSink\Traits\LogPrintf;
+use Ragnarok\Ruter\Facades\RuterTransactions;
+use Ragnarok\Sink\Services\LocalFiles;
+use Ragnarok\Sink\Sinks\SinkBase;
+use Ragnarok\Sink\Traits\LogPrintf;
 
 class SinkRuter extends SinkBase
 {

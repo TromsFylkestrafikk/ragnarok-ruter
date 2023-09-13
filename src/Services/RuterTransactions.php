@@ -1,12 +1,12 @@
 <?php
 
-namespace TromsFylkestrafikk\RagnarokRuter\Services;
+namespace Ragnarok\Ruter\Services;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use TromsFylkestrafikk\RagnarokRuter\Facades\RuterAuth;
-use TromsFylkestrafikk\RagnarokSink\Traits\LogPrintf;
+use Ragnarok\Ruter\Facades\RuterAuth;
+use Ragnarok\Sink\Traits\LogPrintf;
 
 /**
  * Retrieval of transactions done in the KK 1.0 cooperation

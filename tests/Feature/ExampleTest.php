@@ -1,8 +1,8 @@
 <?php
 
-namespace TromsFylkestrafikk\RagnarokRuter\Tests\Feature;
+namespace Ragnarok\Ruter\Tests\Feature;
 
-use TromsFylkestrafikk\RagnarokRuter\Tests\TestCase;
+use Ragnarok\Ruter\Tests\TestCase;
 
 class ExampleTest extends TestCase
 {

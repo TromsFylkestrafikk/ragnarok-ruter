@@ -1,8 +1,8 @@
 <?php
 
-namespace TromsFylkestrafikk\RagnarokRuter\Tests\Unit;
+namespace Ragnarok\Ruter\Tests\Unit;
 
-use TromsFylkestrafikk\RagnarokRuter\Tests\TestCase;
+use Ragnarok\Ruter\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ExampleTest extends TestCase

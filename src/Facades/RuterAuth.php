@@ -1,12 +1,12 @@
 <?php
 
-namespace TromsFylkestrafikk\RagnarokRuter\Facades;
+namespace Ragnarok\Ruter\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use TromsFylkestrafikk\RagnarokRuter\Services\RuterAuthToken;
+use Ragnarok\Ruter\Services\RuterAuthToken;
 
 /**
- * @mixin \TromsFylkestrafikk\RagnarokRuter\Services\RuterAuthToken
+ * @mixin \Ragnarok\Ruter\Services\RuterAuthToken
  */
 class RuterAuth extends Facade
 {

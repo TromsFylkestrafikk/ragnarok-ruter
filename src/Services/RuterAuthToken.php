@@ -1,9 +1,9 @@
 <?php
 
-namespace TromsFylkestrafikk\RagnarokRuter\Services;
+namespace Ragnarok\Ruter\Services;
 
 use Illuminate\Support\Facades\Http;
-use TromsFylkestrafikk\RagnarokSink\Traits\LogPrintf;
+use Ragnarok\Sink\Traits\LogPrintf;
 
 /**
  * Handle authentication for Ruter services
