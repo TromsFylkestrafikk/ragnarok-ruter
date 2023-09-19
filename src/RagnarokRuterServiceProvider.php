@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Ragnarok\Ruter\Services\RuterAuthToken;
 use Ragnarok\Ruter\Services\RuterTransactions;
+use Ragnarok\Ruter\Sinks\SinkRuter;
+use Ragnarok\Sink\Facades\SinkRegistrar;
 
 class RagnarokRuterServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,7 @@ class RagnarokRuterServiceProvider extends ServiceProvider
         $this->publishConfig();
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        SinkRegistrar::register(SinkRuter::class);
         // $this->loadViewsFrom(__DIR__.'/resources/views', 'ragnarok_Ruter');
         // $this->registerRoutes();
     }
