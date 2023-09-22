@@ -13,8 +13,8 @@ class SinkRuter extends SinkBase
 {
     use LogPrintf;
 
-    public $id = "ruter";
-    public $title = "Ruter";
+    public static $id = "ruter";
+    public static $title = "Ruter";
 
     /**
      * @var LocalFiles
@@ -23,8 +23,8 @@ class SinkRuter extends SinkBase
 
     public function __construct()
     {
-        $this->ruterFiles = new LocalFiles($this->id);
-        $this->logPrintfInit('[Sink %s]: ', $this->id);
+        $this->ruterFiles = new LocalFiles(static::$id);
+        $this->logPrintfInit('[Sink %s]: ', static::$id);
     }
 
     /**
