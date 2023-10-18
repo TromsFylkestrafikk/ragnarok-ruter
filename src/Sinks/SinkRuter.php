@@ -2,7 +2,6 @@
 
 namespace Ragnarok\Ruter\Sinks;
 
-use Exception;
 use Illuminate\Support\Carbon;
 use Ragnarok\Ruter\Facades\RuterTransactions;
 use Ragnarok\Sink\Services\LocalFiles;
@@ -48,14 +47,9 @@ class SinkRuter extends SinkBase
      */
     public function fetch($id): bool
     {
-        $file = null;
-        try {
-            $date = new Carbon($id);
-            $content = gzencode(RuterTransactions::getTransactionsAsJson($date));
-            $file = $this->ruterFiles->toFile($this->chunkFilename($id), $content);
-        } catch (Exception $except) {
-            $this->error("%s[%d]: %s\n, %s", $except->getFile(), $except->getLine(), $except->getMessage(), $except->getTraceAsString());
-        }
+        $date = new Carbon($id);
+        $content = gzencode(RuterTransactions::getTransactionsAsJson($date));
+        $file = $this->ruterFiles->toFile($this->chunkFilename($id), $content);
         return $file ? true : false;
     }
 
@@ -85,15 +79,11 @@ class SinkRuter extends SinkBase
      */
     public function deleteImport($id): bool
     {
-        try {
-            RuterTransactions::delete(new Carbon($id));
-            return true;
-        } catch (Exception $except) {
-            return false;
-        }
+        RuterTransactions::delete(new Carbon($id));
+        return true;
     }
 
-    protected function chunkFilename($id)
+    protected function chunkFilename(string $id): string
     {
         return $id . '.json.gz';
     }
