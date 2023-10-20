@@ -75,7 +75,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ruter_transactions');
         Schema::dropIfExists('ruter_passengers');
+        Schema::dropIfExists('ruter_transactions');
     }
 };
