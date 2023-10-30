@@ -49,7 +49,7 @@ class RuterTransactions
      *
      * @param array $transactions
      *
-     * @return $this
+     * @return int
      */
     public function import($transactions)
     {
@@ -59,7 +59,7 @@ class RuterTransactions
             $this->insertTransaction($row);
         }
         $this->debug('Imported %d transactions', count($transactions));
-        return $this;
+        return $rowCount;
     }
 
     /**

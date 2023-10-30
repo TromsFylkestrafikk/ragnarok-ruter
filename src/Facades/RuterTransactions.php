@@ -9,7 +9,7 @@ use Ragnarok\Ruter\Services\RuterTransactions as RuterTransactionsService;
 /**
  * @method static string getTransactionsAsJson(Carbon $date)
  * @method static array getTransactionsAsArray(Carbon $date)
- * @method static RuterTransactionsService import(array $transactions)
+ * @method static int import(array $transactions)
  * @method static RuterTransactionsService delete(Carbon $date)
  */
 class RuterTransactions extends Facade

@@ -45,12 +45,12 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
-    public function fetch($id): bool
+    public function fetch($id): int
     {
         $date = new Carbon($id);
         $content = gzencode(RuterTransactions::getTransactionsAsJson($date));
         $file = $this->ruterFiles->toFile($this->chunkFilename($id), $content);
-        return $file ? true : false;
+        return $file ? $file->size : 0;
     }
 
     /**
@@ -65,13 +65,12 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
-    public function import($id): bool
+    public function import($id): int
     {
-        RuterTransactions::import(json_decode(
+        return RuterTransactions::import(json_decode(
             gzdecode($this->ruterFiles->getContents($this->chunkFilename($id))),
             true
         ));
-        return true;
     }
 
     /**
