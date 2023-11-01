@@ -56,6 +56,14 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
+    public function getChunkVersion($id): string
+    {
+        return $this->ruterFiles->getFile($this->chunkFilename($id))->checksum;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function removeChunk($id): bool
     {
         $this->ruterFiles->rmFile($this->chunkFilename($id));
