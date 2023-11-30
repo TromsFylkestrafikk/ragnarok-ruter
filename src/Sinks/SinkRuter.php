@@ -2,6 +2,7 @@
 
 namespace Ragnarok\Ruter\Sinks;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use Ragnarok\Ruter\Facades\RuterTransactions;
 use Ragnarok\Sink\Services\LocalFiles;
@@ -45,7 +46,7 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
-    public function fetch($id): int
+    public function fetch(string $id): int
     {
         $date = new Carbon($id);
         $content = gzencode(RuterTransactions::getTransactionsAsJson($date));
@@ -56,7 +57,7 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
-    public function getChunkVersion($id): string
+    public function getChunkVersion(string $id): string
     {
         return $this->ruterFiles->getFile($this->chunkFilename($id))->checksum;
     }
@@ -64,7 +65,15 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
-    public function removeChunk($id): bool
+    public function getChunkFiles(string $id): Collection
+    {
+        return $this->ruterFiles->getFilesLike($this->chunkFilename($id));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function removeChunk(string $id): bool
     {
         $this->ruterFiles->rmFile($this->chunkFilename($id));
         return true;
@@ -73,7 +82,7 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
-    public function import($id): int
+    public function import(string $id): int
     {
         return RuterTransactions::import(json_decode(
             gzdecode($this->ruterFiles->getContents($this->chunkFilename($id))),
@@ -84,7 +93,7 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
-    public function deleteImport($id): bool
+    public function deleteImport(string $id): bool
     {
         RuterTransactions::delete(new Carbon($id));
         return true;
