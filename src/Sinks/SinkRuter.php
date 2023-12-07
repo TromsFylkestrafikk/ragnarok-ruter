@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use Ragnarok\Ruter\Facades\RuterTransactions;
 use Ragnarok\Sink\Services\LocalFiles;
+use Ragnarok\Sink\Models\SinkFile;
 use Ragnarok\Sink\Sinks\SinkBase;
 use Ragnarok\Sink\Traits\LogPrintf;
 
@@ -46,46 +47,20 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
-    public function fetch(string $id): int
+    public function fetch(string $id): SinkFile|null
     {
         $date = new Carbon($id);
         $content = gzencode(RuterTransactions::getTransactionsAsJson($date));
-        $file = $this->ruterFiles->toFile($this->chunkFilename($id), $content);
-        return $file ? $file->size : 0;
+        return $this->ruterFiles->toFile($this->chunkFilename($id), $content);
     }
 
     /**
      * @inheritdoc
      */
-    public function getChunkVersion(string $id): string
+    public function import(string $id, SinkFile $file): int
     {
-        return $this->ruterFiles->getFile($this->chunkFilename($id))->checksum;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getChunkFiles(string $id): Collection
-    {
-        return $this->ruterFiles->getFilesLike($this->chunkFilename($id));
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function removeChunk(string $id): bool
-    {
-        $this->ruterFiles->rmFile($this->chunkFilename($id));
-        return true;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function import(string $id): int
-    {
-        return RuterTransactions::import(json_decode(
-            gzdecode($this->ruterFiles->getContents($this->chunkFilename($id))),
+        return RuterTransactions::delete($id)->import(json_decode(
+            gzdecode($this->ruterFiles->getContents($file)),
             true
         ));
     }
