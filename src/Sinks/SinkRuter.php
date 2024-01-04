@@ -7,19 +7,11 @@ use Ragnarok\Ruter\Facades\RuterTransactions;
 use Ragnarok\Sink\Services\LocalFile;
 use Ragnarok\Sink\Models\SinkFile;
 use Ragnarok\Sink\Sinks\SinkBase;
-use Ragnarok\Sink\Traits\LogPrintf;
 
 class SinkRuter extends SinkBase
 {
-    use LogPrintf;
-
     public static $id = "ruter";
     public static $title = "Ruter";
-
-    public function __construct()
-    {
-        $this->logPrintfInit('[Sink %s]: ', static::$id);
-    }
 
     /**
      * @inheritdoc

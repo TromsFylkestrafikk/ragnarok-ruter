@@ -6,20 +6,12 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Ragnarok\Ruter\Facades\RuterAuth;
-use Ragnarok\Sink\Traits\LogPrintf;
 
 /**
  * Retrieval of transactions done in the KK 1.0 cooperation
  */
 class RuterTransactions
 {
-    use LogPrintf;
-
-    public function __construct(protected $config)
-    {
-        $this->logPrintfInit('[Ruter Transactions]: ');
-    }
-
     /**
      * Get all transactions for a single day.
      *
@@ -58,7 +50,6 @@ class RuterTransactions
             $rowCount++;
             $this->insertTransaction($row);
         }
-        $this->debug('Imported %d transactions', count($transactions));
         return $rowCount;
     }
 
@@ -71,7 +62,6 @@ class RuterTransactions
      */
     public function delete($date)
     {
-        $this->debug("Purging imported data for %s", $date->format('Y-m-d'));
         DB::table('ruter_transactions')->where('order_date', $date)->delete();
         return $this;
     }
@@ -146,7 +136,7 @@ class RuterTransactions
 
     protected function url($date)
     {
-        return sprintf($this->config['transactions_url'], $date, $date);
+        return sprintf(config('ragnarok_ruter.transactions_url'), $date, $date);
     }
 
     /**
