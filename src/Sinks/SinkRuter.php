@@ -2,10 +2,9 @@
 
 namespace Ragnarok\Ruter\Sinks;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use Ragnarok\Ruter\Facades\RuterTransactions;
-use Ragnarok\Sink\Services\LocalFiles;
+use Ragnarok\Sink\Services\LocalFile;
 use Ragnarok\Sink\Models\SinkFile;
 use Ragnarok\Sink\Sinks\SinkBase;
 use Ragnarok\Sink\Traits\LogPrintf;
@@ -17,14 +16,8 @@ class SinkRuter extends SinkBase
     public static $id = "ruter";
     public static $title = "Ruter";
 
-    /**
-     * @var LocalFiles
-     */
-    protected $ruterFiles = null;
-
     public function __construct()
     {
-        $this->ruterFiles = new LocalFiles(static::$id);
         $this->logPrintfInit('[Sink %s]: ', static::$id);
     }
 
@@ -49,9 +42,10 @@ class SinkRuter extends SinkBase
      */
     public function fetch(string $id): SinkFile|null
     {
-        $date = new Carbon($id);
-        $content = gzencode(RuterTransactions::getTransactionsAsJson($date));
-        return $this->ruterFiles->toFile($this->chunkFilename($id), $content);
+        $content = gzencode(RuterTransactions::getTransactionsAsJson(new Carbon($id)));
+        return LocalFile::createFromFilename(self::$id, $this->chunkFilename($id))
+            ->put($content)
+            ->getFile();
     }
 
     /**
@@ -59,8 +53,9 @@ class SinkRuter extends SinkBase
      */
     public function import(string $id, SinkFile $file): int
     {
-        return RuterTransactions::delete($id)->import(json_decode(
-            gzdecode($this->ruterFiles->getContents($file)),
+        $local = new LocalFile(self::$id, $file);
+        return RuterTransactions::delete(new Carbon($id))->import(json_decode(
+            gzdecode($local->get()),
             true
         ));
     }
@@ -68,7 +63,7 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
-    public function deleteImport(string $id): bool
+    public function deleteImport(string $id, SinkFile $file): bool
     {
         RuterTransactions::delete(new Carbon($id));
         return true;
