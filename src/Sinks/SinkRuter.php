@@ -2,30 +2,16 @@
 
 namespace Ragnarok\Ruter\Sinks;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use Ragnarok\Ruter\Facades\RuterTransactions;
-use Ragnarok\Sink\Services\LocalFiles;
+use Ragnarok\Sink\Services\LocalFile;
+use Ragnarok\Sink\Models\SinkFile;
 use Ragnarok\Sink\Sinks\SinkBase;
-use Ragnarok\Sink\Traits\LogPrintf;
 
 class SinkRuter extends SinkBase
 {
-    use LogPrintf;
-
     public static $id = "ruter";
     public static $title = "Ruter";
-
-    /**
-     * @var LocalFiles
-     */
-    protected $ruterFiles = null;
-
-    public function __construct()
-    {
-        $this->ruterFiles = new LocalFiles(static::$id);
-        $this->logPrintfInit('[Sink %s]: ', static::$id);
-    }
 
     /**
      * @inheritdoc
@@ -46,46 +32,22 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
-    public function fetch(string $id): int
+    public function fetch(string $id): SinkFile|null
     {
-        $date = new Carbon($id);
-        $content = gzencode(RuterTransactions::getTransactionsAsJson($date));
-        $file = $this->ruterFiles->toFile($this->chunkFilename($id), $content);
-        return $file ? $file->size : 0;
+        $content = gzencode(RuterTransactions::getTransactionsAsJson(new Carbon($id)));
+        return LocalFile::createFromFilename(self::$id, $this->chunkFilename($id))
+            ->put($content)
+            ->getFile();
     }
 
     /**
      * @inheritdoc
      */
-    public function getChunkVersion(string $id): string
+    public function import(string $id, SinkFile $file): int
     {
-        return $this->ruterFiles->getFile($this->chunkFilename($id))->checksum;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getChunkFiles(string $id): Collection
-    {
-        return $this->ruterFiles->getFilesLike($this->chunkFilename($id));
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function removeChunk(string $id): bool
-    {
-        $this->ruterFiles->rmFile($this->chunkFilename($id));
-        return true;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function import(string $id): int
-    {
-        return RuterTransactions::import(json_decode(
-            gzdecode($this->ruterFiles->getContents($this->chunkFilename($id))),
+        $local = new LocalFile(self::$id, $file);
+        return RuterTransactions::delete(new Carbon($id))->import(json_decode(
+            gzdecode($local->get()),
             true
         ));
     }
@@ -93,7 +55,7 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
-    public function deleteImport(string $id): bool
+    public function deleteImport(string $id, SinkFile $file): bool
     {
         RuterTransactions::delete(new Carbon($id));
         return true;
