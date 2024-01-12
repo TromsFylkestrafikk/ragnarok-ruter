@@ -16,6 +16,17 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
+    public function destinationTables(): array
+    {
+        return [
+            'ruter_transactions' => 'All transactions made with information about app id, payment method, ticket type, validity, etc.',
+            'ruter_passengers' => 'List of passenger associated with a transaction',
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getFromDate(): Carbon
     {
         return new Carbon('2020-06-01');
