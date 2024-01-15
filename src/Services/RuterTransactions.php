@@ -6,12 +6,23 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Ragnarok\Ruter\Facades\RuterAuth;
+use Ragnarok\Sink\Services\DbBulkInsert;
 
 /**
  * Retrieval of transactions done in the KK 1.0 cooperation
  */
 class RuterTransactions
 {
+    /**
+     * @var DbBulkInsert
+     */
+    protected $transInserter = null;
+
+    /**
+     * @var DbBulkInsert
+     */
+    protected $paxInserter = null;
+
     /**
      * Get all transactions for a single day.
      *
@@ -39,62 +50,69 @@ class RuterTransactions
     /**
      * Import transactions to DB.
      *
+     * @param string $chunkId
      * @param array $transactions
      *
      * @return int
      */
-    public function import($transactions)
+    public function import(string $chunkId, array $transactions): int
     {
         $rowCount = 0;
+
+        $this->transInserter = new DbBulkInsert('ruter_transactions');
+        $this->paxInserter = new DbBulkInsert('ruter_passengers');
         foreach ($transactions as $row) {
             $rowCount++;
-            $this->insertTransaction($row);
+            $this->insertTransaction($chunkId, $row);
         }
+        $this->transInserter->flush();
+        $this->paxInserter->flush();
         return $rowCount;
     }
 
     /**
      * Delete transactions from DB.
      *
-     * @param Carbon $date
+     * @param string $chunkId
      *
      * @return $this
      */
-    public function delete($date)
+    public function delete(string $chunkId): RuterTransactions
     {
-        DB::table('ruter_transactions')->where('order_date', $date)->delete();
+        DB::table('ruter_transactions')->where('chunk_date', $chunkId)->delete();
         return $this;
     }
 
     /**
      * Insert a single transaction to DB.
      *
+     * @param string $chunkId The associated chunk ID this dump belongs to
      * @param array $json The raw transaction data from Ruter
-     *
-     * @return int The created transaction ID
      */
-    protected function insertTransaction($json)
+    protected function insertTransaction(string $chunkId, array $json): void
     {
-        $orderDate = $this->safeDate($json['orderDate']);
-        $transaction_id = DB::table('ruter_transactions')->insertGetId([
+        $this->transInserter->addRecord([
+            'id'                => $json['id'],
+            'chunk_date'        => new Carbon($chunkId),
             'order_id'          => $json['orderId'],
-            'order_date'        => $orderDate->format('Y-m-d'),
-            'order_time'        => $orderDate->format('H:i:s'),
+            'order_date'        => $this->safeDate($json['orderDate']),
             'order_status'      => $json['orderStatus'],
-            'payer_app_id'      => $json['payerAppInstanceName'],
-            'payer_platform'    => $json['payerAppPlatform'],
-            'payer_version'     => $json['payerAppVersion'],
+            'payer_app_instance_name' => $json['payerAppInstanceName'],
+            'payer_app_platform' => $json['payerAppPlatform'],
+            'payer_app_version' => $json['payerAppVersion'],
             'payer_phone_type'  => $json['payerTelephoneType'],
-            'app_id'            => $json['appInstanceName'],
+            'payer_os_version'  => $json['payerOsVersion'],
+            'app_instance_name' => $json['appInstanceName'],
             'app_instance_id'   => $json['appInstanceId'],
             'payer_id'          => $json['payerId'],
             'payment_id'        => $json['paymentId'],
             'payment_method'    => $json['paymentMethod'],
             'payment_status'    => $json['paymentStatus'],
             'amount'            => $json['amount'],
-            'vat'               => $json['vatAmount'],
+            'vat_amount'        => $json['vatAmount'],
             'vat_percentage'    => $json['vatPercentage'],
             'credit_amount'     => $json['creditAmount'],
+            'credit_date'       => new Carbon($json['creditDate']),
             'transaction_type'  => $json['transType'],
             'ticket_number'     => $json['ticketNumber'],
             'ticket_type'       => $json['ticketType'],
@@ -109,23 +127,21 @@ class RuterTransactions
             'zone_to'           => $json['toZone'],
             'zones'             => $json['nrOfZones'],
             'zones_all'         => $json['allZones'],
-            'event_time'        => isset($json['eventTime']) ? $this->safeDate($json['eventTime'])->format("Y-m-d H:i:s") : null,
             'distribution_type' => $json['distributionType'],
             'cs_ordered_by'     => $json['csOrderedBy'],
             'cs_comment'        => $json['csComment'],
             'cs_invoice_ref'    => $json['csInvoiceReference'],
-            'platform_version'  => $json['platformVersion'] ?? null,
         ]);
         foreach ($json['passengers'] as $pax) {
-            DB::table('ruter_passengers')->insert([
-                'transaction_id'    => $transaction_id,
-                'product_id'        => $pax['productId'],
-                'profile_id'        => $pax['profileId'],
-                'profile'           => $pax['profile'],
-                'count'             => $pax['count']
+            $this->paxInserter->addRecord([
+                'transaction_pax_id' => $pax['id'],
+                'transaction_id'     => $json['id'],
+                'product_id'         => $pax['productId'],
+                'profile_id'         => $pax['profileId'],
+                'profile'            => $pax['profile'],
+                'count'              => $pax['count'],
             ]);
         }
-        return $transaction_id;
     }
 
     protected function getTransactionsAsResponse(Carbon $date)

@@ -54,13 +54,13 @@ class SinkRuter extends SinkBase
     /**
      * @inheritdoc
      */
-    public function import(string $id, SinkFile $file): int
+    public function import(string $chunkId, SinkFile $file): int
     {
         $local = new LocalFile(self::$id, $file);
-        return RuterTransactions::delete(new Carbon($id))->import(json_decode(
-            gzdecode($local->get()),
-            true
-        ));
+        return RuterTransactions::delete(new Carbon($chunkId))->import(
+            $chunkId,
+            json_decode(gzdecode($local->get()), true)
+        );
     }
 
     /**
