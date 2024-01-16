@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ruter_transactions', function(Blueprint $table)
         {
             $table->char('id', 64)->primary()->comment('Transaction ID in UUID-ish format with appended string.');
-            $table->date('chunk_date')->comment('The dated chunk this order belongs to')->index();
+            $table->date('chunk_date')->index()->comment('The dated chunk this order belongs to');
             $table->char('order_id', 64)->index();
             $table->dateTime('order_date')->comment('Order date in local timezone (Europe/Oslo)');
             $table->string('order_status')->nullable()->comment('Always \'FINISHED\'?');
