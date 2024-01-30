@@ -57,6 +57,7 @@ return new class extends Migration
         Schema::create('ruter_passengers', function(Blueprint $table)
         {
             $table->id()->comment('Unique record ID in ragnarok');
+            $table->date('chunk_date')->index()->comment('The dated chunk this passenger data belongs to');
             $table->char('transaction_pax_id', 64)->comment('Transaction ID in UUID format');
             $table->char('transaction_id', 64)->index()->comment('References `ruter_transactions`');
             $table->unsignedInteger('product_id')->comment('Product ID');
@@ -66,10 +67,6 @@ return new class extends Migration
             $table->decimal('vat_amount')->nullable()->comment('How mouch of payed amount is taxed');
             $table->decimal('vat_percentage')->nullable()->comment('Tax percentage of payed amount');
             $table->unsignedInteger('count');
-            $table->foreign('transaction_id')
-                ->references('id')
-                ->on('ruter_transactions')
-                ->onDelete('cascade');
         });
     }
 

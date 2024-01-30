@@ -80,6 +80,7 @@ class RuterTransactions
     public function delete(string $chunkId): RuterTransactions
     {
         DB::table('ruter_transactions')->where('chunk_date', $chunkId)->delete();
+        DB::table('ruter_passengers')->where('chunk_date', $chunkId)->delete();
         return $this;
     }
 
@@ -91,9 +92,10 @@ class RuterTransactions
      */
     protected function insertTransaction(string $chunkId, array $json): void
     {
+        $chunkDate = new Carbon($chunkId);
         $this->transInserter->addRecord([
             'id'                => $json['id'],
-            'chunk_date'        => new Carbon($chunkId),
+            'chunk_date'        => $chunkDate,
             'order_id'          => $json['orderId'],
             'order_date'        => $this->safeDate($json['orderDate']),
             'order_status'      => $json['orderStatus'],
@@ -134,6 +136,7 @@ class RuterTransactions
         ]);
         foreach ($json['passengers'] as $pax) {
             $this->paxInserter->addRecord([
+                'chunk_date'        => $chunkDate,
                 'transaction_pax_id' => $pax['id'],
                 'transaction_id'     => $json['id'],
                 'product_id'         => $pax['productId'],
