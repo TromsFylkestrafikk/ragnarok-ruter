@@ -1,6 +1,6 @@
 {
   "name": "ragnarok-ruter",
-  "version": "0.0.1-dev",
+  "version": "0.1.0",
   "description": "Ragnarok Ruter data sink",
   "main": "index.js",
   "directories": {
