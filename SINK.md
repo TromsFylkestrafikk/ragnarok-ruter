@@ -20,6 +20,10 @@ passengers and the product they has attached to the given purchase.
 Historically this data set has been unstable and prone to
 changes/errors and unannounced updates.
 
+Another thing to notice is the user identifier. There is no such. The
+only way to track users is by app instance name, which changes every
+time the app is installed.
+
 ## Source
 
 Ruter was the main motivator for the kollektivkameratene 1.0
@@ -29,7 +33,7 @@ platform Ruter developed as part of KK 1.0.
 ## Usage
 
 This data can be used to identify mobile platform among our user base
-and identify high and low volume customers. It can also be used to
-detect/point out time/periods with outage to give us an estimate of
-lost income. As this is the major source of income for Troms' part the
-business value is obvious.
+and identify big spenders. It can also be used to detect/point out
+time/periods with outage to give us an estimate of lost income. As
+this is the major source of income for Troms' part the business value
+is obvious.
