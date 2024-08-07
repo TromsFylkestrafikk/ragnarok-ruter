@@ -4,7 +4,7 @@ This contains transaction data for the old 'Troms Billett' app
 develped by Ruter as part of the now dead KK (Kollektivkameratene) 1.0
 collaboration.
 
-The transaction in this app stood for the majority of our
+The transactions in this app stood for the majority of our
 ticketing/product income in the period it was live.
 
 ## Data
