@@ -1,5 +1,11 @@
 # Change Log
 
+## [Unreleased]
+
+### Changed
+- Widened some columns that has potential or actual wider data than
+  initially provided.
+
 ## [0.1.0] – 2024-04-18
 
 ### Added
