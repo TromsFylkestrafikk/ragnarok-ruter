@@ -93,8 +93,10 @@ class RuterTransactions
     protected function insertTransaction(string $chunkId, array $json): void
     {
         $chunkDate = new Carbon($chunkId);
+        $transId = md5($json['id']);
         $this->transInserter->addRecord([
-            'id'                => $json['id'],
+            'id'                => $transId,
+            'id_real'           => $json['id'],
             'chunk_date'        => $chunkDate,
             'order_id'          => $json['orderId'],
             'order_date'        => $this->safeDate($json['orderDate']),
@@ -138,7 +140,7 @@ class RuterTransactions
             $this->paxInserter->addRecord([
                 'chunk_date'        => $chunkDate,
                 'transaction_pax_id' => $pax['id'],
-                'transaction_id'     => $json['id'],
+                'transaction_id'     => $transId,
                 'product_id'         => $pax['productId'],
                 'profile_id'         => $pax['profileId'],
                 'profile'            => $pax['profile'],
